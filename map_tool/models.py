@@ -30,6 +30,10 @@ class Ksag(models.Model):
     # Brand name
     brand_name = models.CharField(max_length=300)
 
+    # String representation
+    def __str__(self):
+
+        return "KSAG " + str(self.ksag_num)
 
 class Sku(models.Model):
 
@@ -44,6 +48,10 @@ class Sku(models.Model):
     # Item descrption
     description = models.CharField(max_length=300)
 
+    # String representation
+    def __str__(self):
+        
+        return "Blick SKU " + str(self.sku_num)
 
 class CompSku(models.Model):
 
@@ -73,11 +81,15 @@ class CompSku(models.Model):
     current_price = models.DecimalField(max_digits=10, 
                                        decimal_places=2)
 
-
     # Date on which this information was collected/crawled (NOT when
     # the JSON export was pulled from Ebisu
     date_crawled = models.DateTimeField()
 
+    # String representation
+    def __str__(self):
+
+        return self.competitor_name + ": " + str(self.sku_num) 
+        
 class Map(models.Model):
 
 # MAP info object model
@@ -95,6 +107,11 @@ class Map(models.Model):
     # Percent at which item is now being discounted
     current_percent = models.DecimalField(max_digits=4,
                                   decimal_places=2)
+
+    # String representation
+    def __str__(self):
+
+        return "MAP info for SKU " + str(self.sku_num)
 
 class Promotion(models.Model):
 
@@ -116,7 +133,10 @@ class Promotion(models.Model):
     percent = models.DecimalField(max_digits=4,
                                   decimal_places=2)
 
+    # String representation
+    def __str__(self):
 
+        return "Promo for SKU " + str(self.parent_sku)
 
 
 
