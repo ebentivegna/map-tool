@@ -13,27 +13,27 @@ class Ksag(models.Model):
 # KSAG object model.
    
     # KSAG number is primary key 
-    ksag_num = models.IntegerField(primary_key=True)
+    ksagid = models.CharField('KSAG ID', primary_key=True, max_length=10)
 
     # Name of KSAG group
-    name = models.CharField(max_length=300)
+    name = models.CharField('KSAG name', max_length=300)
 
     # Category ID number
-    category_num = models.IntegerField('Ebisu category ID')
+    categoryid = models.CharField('Ebisu category ID', max_length=10)
     
     # Name of category group
-    category_name = models.CharField(max_length=300)
+    categoryname = models.CharField('Ebisu category name', max_length=300)
     
     # Brand ID number
-    brand_num  = models.IntegerField()
+    brandid  = models.CharField('Brand ID', max_length=10)
    
     # Brand name
-    brand_name = models.CharField(max_length=300)
+    brandname = models.CharField('Brand name', max_length=300)
 
     # String representation
     def __str__(self):
 
-        return "KSAG " + str(self.ksag_num)
+        return "KSAG " + self.ksagid
 
 class Sku(models.Model):
 
@@ -43,15 +43,15 @@ class Sku(models.Model):
     ksag_num = models.ForeignKey(Ksag)
 
     # SKU ID number is primary key
-    sku_num = models.CharField(primary_key=True, max_length=20)
+    matchsku = models.CharField("Blick SKU ID", primary_key=True, max_length=20)
     
     # Item descrption
-    description = models.CharField(max_length=300)
+    descr = models.CharField("Item description", max_length=300)
 
     # String representation
     def __str__(self):
         
-        return "Blick SKU " + str(self.sku_num)
+        return "Blick SKU " + self.matchsku
 
 class CompSku(models.Model):
 
@@ -61,34 +61,32 @@ class CompSku(models.Model):
     parent_sku = models.ForeignKey(Sku)
 
     # Competitor SKU number is primary key
-    sku_num = models.CharField(primary_key=True,
+    sku = models.CharField('SKU ID', primary_key=True,
                                max_length=50)
 
     # Competitor name
-    competitor_name = models.CharField(max_length=300)
+    sellername = models.CharField('Seller name', max_length=300)
 
     # Competitor ID number
-    competitor_num = models.IntegerField()
+    sellerid = models.CharField('Seller ID', max_length=10)
 
     # Item description (may differ from parent Sku)
-    description = models.CharField(max_length=300)
+    descr = models.CharField('Item description', max_length=300)
 
     # List price
-    list_price = models.DecimalField(max_digits=10, 
-                                    decimal_places=2)
+    listprice = models.CharField('List price', max_length=10)
 
     # Current price - what they are selling it for right now
-    current_price = models.DecimalField(max_digits=10, 
-                                       decimal_places=2)
+    curprice = models.CharField('Current price', max_length=10)
 
     # Date on which this information was collected/crawled (NOT when
     # the JSON export was pulled from Ebisu
-    date_crawled = models.DateTimeField()
+    date = models.CharField('Date crawled', max_length=10)
 
     # String representation
     def __str__(self):
 
-        return self.competitor_name + ": " + str(self.sku_num) 
+        return self.competitor_name + ": " + self.sku 
         
 class Map(models.Model):
 
@@ -98,20 +96,21 @@ class Map(models.Model):
     parent_sku = models.ForeignKey(Sku)
 
     # SKU ID number is primary key
-    sku_num = models.CharField(primary_key=True, max_length=20)
+    sku = models.CharField('SKU ID', primary_key=True, max_length=20)
 
     # Percent at which item is usually discounted
-    base_percent = models.DecimalField(max_digits=4,
-                               decimal_places=2)
+    basepercent = models.CharField('Base percent discount', max_length=5)
 
     # Percent at which item is now being discounted
-    current_percent = models.DecimalField(max_digits=4,
-                                  decimal_places=2)
+    percent = models.CharField('Current percent discount', max_length=5)
+
+    # Ebisu editor link
+    editorlink = models.CharField('Ebisu editor link', max_length=200)
 
     # String representation
     def __str__(self):
 
-        return "MAP info for SKU " + str(self.sku_num)
+        return "MAP info for SKU " + self.sku
 
 class Promotion(models.Model):
 
@@ -121,17 +120,16 @@ class Promotion(models.Model):
     parent_sku = models.ForeignKey(Sku)
     
     # Start date of promo
-    start_date = models.DateTimeField()
+    startdate = models.CharField('Start date', max_length=10)
 
     # End date of promo
-    end_date = models.DateTimeField()
+    enddate = models.CharField('End date', max_length=10)
 
     # Promotion name/title
-    name = models.CharField(max_length=300)
+    name = models.CharField('Promotion name', max_length=300)
 
     # Percent discount of promotion
-    percent = models.DecimalField(max_digits=4,
-                                  decimal_places=2)
+    percent = models.DecimalField('Promotion discount', max_length=5),
 
     # String representation
     def __str__(self):
